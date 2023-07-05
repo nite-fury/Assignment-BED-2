@@ -51,6 +51,7 @@ body{
 	width: 350px;
 	padding: 10px;
 	z-index: 2;
+
 }
 
 .login input[type=text]{
@@ -117,4 +118,9 @@ body{
 
 .login input[type=button]:focus{
 	outline: none;
+}
+
+.card{
+	background-color: #ffff;
+	border: 1px solid #ffff;
 }
