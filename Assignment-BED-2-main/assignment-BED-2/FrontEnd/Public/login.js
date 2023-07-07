@@ -9,7 +9,7 @@
             return;
       }
       $.ajax({
-        url: 'http://localhost:8081/user/login',
+        url: 'http://localhost:8081/users/login',
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',

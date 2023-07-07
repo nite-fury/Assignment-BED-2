@@ -4,6 +4,8 @@
 const { query } = require("express");
 const db = require("./databaseConfig");
 const dbconnect = require("./databaseConfig");
+var jwt =require('jsonwebtoken')
+var config = require('../config.js')
 
 const User = {
   //function to find all users
@@ -420,6 +422,38 @@ const User = {
           }
           dbConn.end()
           return callback(null, getresults);
+        })
+      }
+    })
+  },
+  login: function(email, password, callback){
+    var dbConn = db.getConnection();
+    dbConn.connect(function (err){
+      if (err) {
+        return callback(err,null);
+      }
+      else {
+        const checklogin = "SELECT * from users where email=? and password=?";
+
+        dbConn.query(checklogin, [email,password], function (err, result){
+          dbConn.end();
+
+          if (err){
+            return callback(err, null, null);
+          } else {
+            var token = "";
+            var i;
+            if (result.length == 1){
+              token = jwt.sign({ id: result[0].username, type: result[0].role}, config.key, {
+                expiresIn: 86400
+              });
+              return callback(null, token, result);
+            } else {
+              var err2 = new Error("UserID/Password does not match.")
+              err2.statusCode = 500;
+              return callback(err2, null, null)
+            }
+          }
         })
       }
     })
