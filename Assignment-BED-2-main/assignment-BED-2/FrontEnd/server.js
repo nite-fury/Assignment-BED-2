@@ -28,7 +28,7 @@ app.get("/",(req,res,next) => {
     const options = {
         root: path.join(__dirname)
     }
-    const filename = "/Public/login.html";
+    const filename = "/Public/home.html";
     res.sendFile(filename,options, function (err) {
         if (err) {
             next(err);
