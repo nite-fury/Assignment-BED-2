@@ -1,9 +1,0 @@
-#intro {
-    background-image: url("/homepage.jpg");
-    background-position: center center;
-    height: 100vh;
-  }
-
-  .hover:hover {
-    border-color: black;
-  }
