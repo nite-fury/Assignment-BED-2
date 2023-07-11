@@ -20,7 +20,7 @@
             return;
           }
           localStorage.setItem('token', data.token);
-          localStorage.setItem('userData', data.UserData);
+          localStorage.setItem('userData', data.UserDATA);
           location.assign('http://localhost:3001/home.html');
         },
         error: (xhr, status, err) => {

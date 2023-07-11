@@ -39,6 +39,13 @@ app.get("/",(req,res,next) => {
     })
 })
 
+app.use((req, res, next) => {
+    const options = {
+        root: path.join(__dirname)
+    }
+    res.status(404).sendFile("/Public/error 404 page.html",options)
+  })
+
 
 app.listen(port,hostname,function(){
 
