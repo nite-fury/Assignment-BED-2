@@ -206,7 +206,7 @@ app.post("/users/login", (req,res) => {
                 res.setHeader('Content-Type', 'application/json');
                 delete result[0]['password'];
                 console.log(result);
-            res.json({success: true, UserDATA: JSON.stringify(result), token:token, status: 'You are successfully logged in!'});
+            res.json({success: true, UserData: JSON.stringify(result), token:token, status: 'You are successfully logged in!'});
             res.send();
         } else {
             console.log(err)
