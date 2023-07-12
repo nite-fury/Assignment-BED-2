@@ -12,7 +12,7 @@ $(document).ready(function () {
   <ul class="dropdown-menu dropdown-menu-dark">
     <li><a class="dropdown-item" href="profile.html">Profile</a></li>
     <li><a class="dropdown-item" href="cart.html">Cart</a></li>
-    <li><a class="dropdown-item" href="logout.html" id="logout">Logout</li>
+    <li><a class="dropdown-item" href="logout.html" id="logout">Logout</a></li>
   </ul>
 </div>`);
       }
