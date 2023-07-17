@@ -39,6 +39,28 @@ const User = {
         })
       }
     })
+  },
+   //function to insert new user
+   insert: function (user, callback) {
+    var dbConn = db.getConnection();
+    dbConn.connect(function (err) {
+
+      if (err) {//database connection got issue!
+
+        return callback(err, null);
+      } else {
+        console.log("query")
+        type = "customer"
+        const insertQuery ="INSERT INTO users (username, email, password, type, profile_pic_url) VALUES (?, ?, ?, ?, ?);";
+        dbConn.query(insertQuery, [user.username, user.email, user.password, type, user.profile_pic_url], (error, results) => {
+          dbConn.end()
+          if (error) {
+            return callback(error, null);
+          }
+          return callback(null, results);
+        });
+      }
+    });
   }
 }
 module.exports = User;

@@ -37,4 +37,22 @@ app.post("/users/login", (req,res) => {
         }
     });
 });
+
+app.post("/users/signup", (req,res,next) => {
+    user.insert(req.body, (error,userID) =>{
+        if (error != null){
+            if(error.errno == 1062){
+                res.status(422).send("Unprocessable Entity")
+                return
+             }
+        }
+        if(error){
+            res.status(500).send("Internal Server Error")
+            return
+        }
+        else{
+            res.status(201).send({"userid":userID.insertId})
+        }
+    })
+})
 module.exports = app
