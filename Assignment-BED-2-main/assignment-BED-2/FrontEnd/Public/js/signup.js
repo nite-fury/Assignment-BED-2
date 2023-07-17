@@ -4,7 +4,6 @@ $(document).ready(function () {
         username:$('#username').val(),
         email:$('#email').val(),
         password:$('#password').val(),
-        profile_pic_url:"placeholder"
       }
       if ($('#email').val().length === 0 || $('#password').val().length === 0 || $('#username').val().length === 0){
         $('#msg').text('Field is empty');
@@ -17,11 +16,11 @@ $(document).ready(function () {
         contentType: 'application/json',
         dataType: 'json',
         success:(data, status, xhr) => {
-          location.replace('http://localhost:3001/login.html');
+          location.replace('http://localhost:3001/created.html');
         },
         error: (xhr, status, err) => {
           console.log(err);
-          $('#msg').text('Credentials are incorrect');
+          $('#msg').text('Account already exist!');
         }
       })
       return false;

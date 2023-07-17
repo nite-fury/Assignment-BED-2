@@ -19,6 +19,7 @@
             $('#msg').text('Credentials are incorrect');
             return;
           }
+          localStorage.clear()
           localStorage.setItem('token', data.token);
           localStorage.setItem('userData', data.UserData);
           location.assign('http://localhost:3001/home.html');

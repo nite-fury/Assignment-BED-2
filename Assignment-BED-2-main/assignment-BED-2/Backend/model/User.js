@@ -49,10 +49,10 @@ const User = {
 
         return callback(err, null);
       } else {
-        console.log("query")
+        profile_pic_url="placeholder.jpg"
         type = "customer"
         const insertQuery ="INSERT INTO users (username, email, password, type, profile_pic_url) VALUES (?, ?, ?, ?, ?);";
-        dbConn.query(insertQuery, [user.username, user.email, user.password, type, user.profile_pic_url], (error, results) => {
+        dbConn.query(insertQuery, [user.username, user.email, user.password, type, profile_pic_url], (error, results) => {
           dbConn.end()
           if (error) {
             return callback(error, null);
