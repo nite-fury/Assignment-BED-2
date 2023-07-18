@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  if (localStorage.length != 0){
   local = JSON.parse(localStorage.userData)
     if (local[0].type === "customer") {   
         console.log(local[0].username)
@@ -31,4 +32,5 @@ $(document).ready(function () {
   </ul>
 </div>`);
       }
+    }
 })

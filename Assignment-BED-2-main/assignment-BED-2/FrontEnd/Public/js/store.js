@@ -7,8 +7,10 @@ $(document).ready(() => {
           // $('value').appendTo('#id'); <-- this works too! (for append)
           //data.forEach(element => {}); <-- this works too! (for for loop)
           $('#results').empty();
+          let price = [];
           let tmpHtml = "";
           for (const index of data){
+            console.log(index.priceid)
               tmpHtml +=`
               <div class="col-lg-4 col-md-6 mb-4">
               <div class="card">
@@ -23,13 +25,21 @@ $(document).ready(() => {
                   <p class="card-text">
                     ${index.description}
                   </p>
-                  <a href="/game.html"class="btn btn-primary" id="view">View More!</a>
+                  <a href="/game.html"class="btn btn-primary" id="${index.priceid}">View More!</a>
                 </div>
               </div>
             </div>
               `;
+              price.push(index.priceid)
           }
           $('#results').append(tmpHtml); //<-- draws page only at the end
+          price.forEach((id)=>{
+            console.log(id)
+            $("#"+id).click(() => {
+              console.log(id)
+              sessionStorage.setItem("priceid", $("#"+id).attr('id'))
+            })
+          })
       },
       error: (xhr, status, err) => {
           console.log(err);
@@ -45,6 +55,7 @@ $(document).ready(() => {
           success: (data, status, xhr) => {
             $('#results').empty();
             let tmpHtml = "";
+            let price = [];
             for (const index of data){
                 tmpHtml +=`
                 <div class="col-lg-4 col-md-6 mb-4">
@@ -60,19 +71,25 @@ $(document).ready(() => {
                     <p class="card-text">
                       ${index.description}
                     </p>
-                    <a href="/game.html"class="btn btn-primary" id="view">View More!</a>
+                    <a href="/game.html"class="btn btn-primary" id="${index.priceid}">View More!</a>
                   </div>
                 </div>
               </div>
                 `;
+                price.push(index.priceid)
             }
             $('#results').append(tmpHtml); //<-- draws page only at the end  
+            price.forEach((id)=>{
+              ($("#"+id)).click(() => {
+                sessionStorage.setItem("priceid",  $("#"+id).attr('id'))
+              })
+            })
           },
           error: (xhr, status, err) => {
           console.log(err);
           console.log("Failed to pull user data!");
       }
-      })
+      });
       return false;
   })
 });

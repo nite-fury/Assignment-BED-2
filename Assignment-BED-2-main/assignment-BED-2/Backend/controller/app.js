@@ -76,5 +76,16 @@ app.get('/game/:search',function(req, res){
             res.status(500).send("Some error");
         }
     });
-}); 
+})
+
+app.get("/game/desc/:priceid",function(req,res){
+    const priceid = req.params.priceid;
+    user.searchpriceid(priceid, function(err,result){
+        if(!err){
+            res.send(result);
+        }else{
+            res.status(500).send("Some error");
+        }
+    })
+})
 module.exports = app

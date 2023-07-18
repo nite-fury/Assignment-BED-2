@@ -68,7 +68,7 @@ const User = {
         if(err){
             return callback(err, null)
         } else{
-          const findAllUsersQuery = "SELECT image_url,title,platform.Platform_name,game.description,gameprices.price FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid;"
+          const findAllUsersQuery = "SELECT gameprices.priceid,image_url,title,platform.Platform_name,game.description,gameprices.price FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid;"
           dbConn.query(findAllUsersQuery, (error,results) => {
               dbConn.end()
               if (error) {
@@ -92,7 +92,7 @@ const User = {
 			}
 			else {
 				console.log("***Connected!");
-				var sql = `SELECT image_url,title,platform.Platform_name,game.description,gameprices.price FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid WHERE game.title LIKE ?`;
+				var sql = `SELECT gameprices.priceid,image_url,title,platform.Platform_name,game.description,gameprices.price FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid WHERE game.title LIKE ?`;
 
 
 				conn.query(sql, [search], function (err, result) {
@@ -106,6 +106,29 @@ const User = {
 				});
 			}
 		});
-	}
+	},
+  searchpriceid: function (search, callback) {
+
+		var conn = db.getConnection();
+		conn.connect(function (err) {
+			if (err) {
+				console.log(err);
+				return callback(err, null);
+			}
+			else {
+				console.log("***Connected!");
+				var sql = ` SELECT game.image_url, category.catname,game.description, game.title FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid JOIN gamecategory ON game.gameid = gamecategory.gameid JOIN category ON gamecategory.catid = category.catid WHERE gameprices.priceid = ?`;
+				conn.query(sql, [search], function (err, result) {
+					conn.end();
+					if (err) {
+						console.log(err);
+						return callback(err, null);
+					} else {
+						return callback(null, result);
+					}
+				});
+			}
+		});
+  }
 }
 module.exports = User;
