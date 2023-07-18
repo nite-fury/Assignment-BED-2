@@ -15,13 +15,29 @@ UNIQUE (email));
 create table game(
 gameid			int				not null	auto_increment,
 title			varchar(50) 	not null,
-description		varchar(300)	not null,
+description		varchar(200)	not null,
 year			int(4)			not null,
+image_url       varchar(200)    not null,
 created_at		timestamp		not null 	Default NOW(),
-primary key (gameid));
+primary key (gameid),
+UNIQUE(title));
+
+create table category (
+catid           int             not null    auto_increment,
+catname         varchar(100)    not null,
+description     varchar(200)    not null,
+primary key (catid),
+UNIQUE(catname));
+
+create table platform(
+platformid		int				not null	auto_increment,
+platform_name	varchar(20)		not null,
+description		varchar(100)	not null,
+primary key (platformid),
+UNIQUE(platform_name));
 
 create table gameprices (
-priceid         int             not null,
+priceid         int             not null    auto_increment,
 gameid          int             not null,
 platformid      int             not null,
 price           float           not null,
@@ -39,13 +55,6 @@ foreign key (catid) REFERENCES category(catid) ON UPDATE CASCADE ON DELETE CASCA
 foreign key (gameid) REFERENCES game(gameid) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-create table category (
-catid           int             not null    auto_increment,
-catname         varchar(100)    not null,
-description     varchar(200)    not null,
-primary key (catid),
-)
-
 create table review (
 reviewid       int              not null    auto_increment,
 gameid         int              not null,
@@ -55,4 +64,4 @@ created_at     timestamp        not null    DEFAULT NOW(),
 primary key (reviewid),
 foreign key (gameid) REFERENCES game(gameid) ON DELETE CASCADE ON UPDATE CASCADE,
 foreign key (userid) REFERENCES users(userid) ON DELETE CASCADE ON UPDATE CASCADE
-)
+);

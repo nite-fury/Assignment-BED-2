@@ -11,7 +11,7 @@ var dbconnect = {
         port: 3306,
         user: 'root',
         password: '9CPa#2nZ9^q299k*dEPe', //your own password
-        database: 'ca1',
+        database: 'ca2',
         dateStrings: true
       });
   

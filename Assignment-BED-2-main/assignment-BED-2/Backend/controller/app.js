@@ -65,4 +65,16 @@ app.get("/game",(req,res,next) => {
         res.status(200).send(results)
     })
 })
+
+app.get('/game/:search',function(req, res){
+    var search = req.params.search;
+    parsesearch =  "%"+search+"%"
+    user.searchgame(parsesearch, function(err, result){
+        if(!err){
+            res.send(result);
+        }else{
+            res.status(500).send("Some error");
+        }
+    });
+}); 
 module.exports = app
