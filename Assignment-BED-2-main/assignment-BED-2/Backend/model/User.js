@@ -61,6 +61,26 @@ const User = {
         });
       }
     });
+  },
+  findAll: function(callback) {
+    dbConn = db.getConnection()
+    dbConn.connect(function(err){
+        if(err){
+            return callback(err, null)
+        } else{
+          const findAllUsersQuery = "SELECT image_url,title,platform.Platform_name,game.description FROM game JOIN platform ON game.platformid=platform.platformid;"
+          dbConn.query(findAllUsersQuery, (error,results) => {
+              dbConn.end()
+              if (error) {
+                  return callback(error, null)
+              }
+              if (results.length == 0){
+                return callback(null, null)
+              }
+              return callback(null,results)
+          });
+          }
+    });
   }
 }
 module.exports = User;
