@@ -88,4 +88,16 @@ app.get("/game/desc/:priceid",function(req,res){
         }
     })
 })
+
+app.post("/review",function(req,res){
+    user.reviewpost(req.body, (error,result) => {
+        if(error){
+            res.status(500).send("Internal Server Error")
+            return
+        }
+        else{
+            res.status(201).send("REVIEW POSTED!")
+        }
+    })
+})
 module.exports = app
