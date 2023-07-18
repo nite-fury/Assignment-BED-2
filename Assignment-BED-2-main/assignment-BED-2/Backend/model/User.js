@@ -117,7 +117,7 @@ const User = {
 			}
 			else {
 				console.log("***Connected!");
-				var sql = ` SELECT game.image_url, category.catname,game.description, game.title FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid JOIN gamecategory ON game.gameid = gamecategory.gameid JOIN category ON gamecategory.catid = category.catid WHERE gameprices.priceid = ?`;
+				var sql = ` SELECT game.gameid,game.image_url, category.catname,game.description, game.title FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid JOIN gamecategory ON game.gameid = gamecategory.gameid JOIN category ON gamecategory.catid = category.catid WHERE gameprices.priceid = ?`;
 				conn.query(sql, [search], function (err, result) {
 					conn.end();
 					if (err) {
@@ -129,6 +129,27 @@ const User = {
 				});
 			}
 		});
+  },
+  reviewpost: function (user, callback) {
+    var dbConn = db.getConnection();
+    dbConn.connect(function (err) {
+
+      if (err) {//database connection got issue!
+
+        return callback(err, null);
+      } else {
+        profile_pic_url="placeholder.jpg"
+        type = "customer"
+        const insertQuery ="INSERT INTO review (gameid, userid, content, rating) VALUES (?, ?, ?, ?);";
+        dbConn.query(insertQuery, [user.gameid, user.userid, user.content, user.rating], (error, results) => {
+          dbConn.end()
+          if (error) {
+            return callback(error, null);
+          }
+          return callback(null, results);
+        });
+      }
+    });
   }
 }
 module.exports = User;

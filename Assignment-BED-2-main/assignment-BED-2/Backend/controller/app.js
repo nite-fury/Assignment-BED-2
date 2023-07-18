@@ -32,7 +32,7 @@ app.post("/users/login", (req,res) => {
             res.send();
         } else {
             console.log(err)
-            res.status(500);
+            res.sendStatus(500);
             res.send(err.statusCode);
         }
     });
@@ -92,11 +92,12 @@ app.get("/game/desc/:priceid",function(req,res){
 app.post("/review",function(req,res){
     user.reviewpost(req.body, (error,result) => {
         if(error){
+            console.log(error)
             res.status(500).send("Internal Server Error")
             return
         }
         else{
-            res.status(201).send("REVIEW POSTED!")
+            res.status(201).send({"status":"success"})
         }
     })
 })
