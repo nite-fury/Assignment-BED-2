@@ -173,6 +173,31 @@ const User = {
 				});
 			}
 		});
-  }
+  },
+  searchgamebypid: function (search, callback) {
+
+		var conn = db.getConnection();
+		conn.connect(function (err) {
+			if (err) {
+				console.log(err);
+				return callback(err, null);
+			}
+			else {
+				console.log("***Connected!");
+				var sql = `SELECT gameprices.priceid,image_url,title,platform.Platform_name,game.description,gameprices.price FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid WHERE gameprices.platformid = ?`;
+
+
+				conn.query(sql, [search], function (err, result) {
+					conn.end();
+					if (err) {
+						console.log(err);
+						return callback(err, null);
+					} else {
+						return callback(null, result);
+					}
+				});
+			}
+		});
+	}
 }
 module.exports = User;

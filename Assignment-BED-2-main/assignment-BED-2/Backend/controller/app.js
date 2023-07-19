@@ -114,5 +114,16 @@ app.get("/review/:gid", function(req,res){
     })
 })
 
+app.get("/game/plat/:pid", function(req, res){
+    var pid = req.params.pid;
+    user.searchgamebypid(pid, function(err, result){
+        if(!err){
+            res.send(result);
+        }else{
+            res.status(500).send("Some error");
+        }
+    });
+})
+
 app
 module.exports = app
