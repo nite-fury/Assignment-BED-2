@@ -79,6 +79,7 @@ $(document).ready(function () {
                       <div class="d-flex justify-content-between mt-3">
                         <button type="button" class="btn btn-primary" id="post">Post</button>
                       </div>
+                      <p class="bold text-danger" id="error"></p>
                     </div>
                   </div>
                 </div>
@@ -89,6 +90,7 @@ $(document).ready(function () {
       </section>`)
     }
     $("#post").click(function (){
+      if($.trim($('#textarea').val()).length > 0){
       let headers = {
         authorization: 'Bearer ' + localStorage.token
     }
@@ -116,6 +118,11 @@ $(document).ready(function () {
             }
           })
           location.reload()
+        }
+        else {
+          $('#error').empty()
+          $('#error').append(`No Comment `)
+        }
     })
     $.ajax({
       url: 'http://localhost:8081/review/' + sessionStorage.gameid,
