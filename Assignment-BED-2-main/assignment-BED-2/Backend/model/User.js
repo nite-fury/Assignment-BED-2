@@ -26,7 +26,7 @@ const User = {
             var token = "";
             var i;
             if (result.length == 1){
-              token = jwt.sign({ id: result[0].username, type: result[0].role}, config.key, {
+              token = jwt.sign({ id: result[0].userid, type: result[0].role}, config.key, {
                 expiresIn: 86400
               });
               return callback(null, token, result);
@@ -130,7 +130,7 @@ const User = {
 			}
 		});
   },
-  reviewpost: function (user, callback) {
+  reviewpost: function (user, tokenuid, callback) {
     var dbConn = db.getConnection();
     dbConn.connect(function (err) {
 
@@ -141,7 +141,7 @@ const User = {
         profile_pic_url="placeholder.jpg"
         type = "customer"
         const insertQuery ="INSERT INTO review (gameid, userid, content, rating) VALUES (?, ?, ?, ?);";
-        dbConn.query(insertQuery, [user.gameid, user.userid, user.content, user.rating], (error, results) => {
+        dbConn.query(insertQuery, [user.gameid, tokenuid, user.content, user.rating], (error, results) => {
           dbConn.end()
           if (error) {
             return callback(error, null);
@@ -150,6 +150,29 @@ const User = {
         });
       }
     });
+  },
+  getreview: function (search, callback) {
+
+		var conn = db.getConnection();
+		conn.connect(function (err) {
+			if (err) {
+				console.log(err);
+				return callback(err, null);
+			}
+			else {
+				console.log("***Connected!");
+				var sql = ` SELECT username,content,rating,review.created_at from review JOIN users ON review.userid = users.userid where gameid = ?`;
+				conn.query(sql, [search], function (err, result) {
+					conn.end();
+					if (err) {
+						console.log(err);
+						return callback(err, null);
+					} else {
+						return callback(null, result);
+					}
+				});
+			}
+		});
   }
 }
 module.exports = User;

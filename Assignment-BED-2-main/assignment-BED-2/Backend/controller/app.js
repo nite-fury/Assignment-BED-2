@@ -89,8 +89,8 @@ app.get("/game/desc/:priceid",function(req,res){
     })
 })
 
-app.post("/review",function(req,res){
-    user.reviewpost(req.body, (error,result) => {
+app.post("/review",verifyToken,function(req,res){
+    user.reviewpost(req.body,req.userid, (error,result) => {
         if(error){
             console.log(error)
             res.status(500).send("Internal Server Error")
@@ -101,4 +101,18 @@ app.post("/review",function(req,res){
         }
     })
 })
+
+app.get("/review/:gid", function(req,res){
+    const gameid = req.params.gid
+    user.getreview(gameid, function(err,result){
+        if(!err){
+            res.status(200).send(result)
+        }
+        else{
+            res.status(500).send("Some error")
+        }
+    })
+})
+
+app
 module.exports = app
