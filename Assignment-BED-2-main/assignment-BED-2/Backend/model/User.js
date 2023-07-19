@@ -75,7 +75,7 @@ const User = {
                   return callback(error, null)
               }
               if (results.length == 0){
-                return callback(null, null)
+                return callback("error", null)
               }
               return callback(null,results)
           });
@@ -198,6 +198,26 @@ const User = {
 				});
 			}
 		});
-	}
+	},
+  getallpid: function(callback) {
+    dbConn = db.getConnection()
+    dbConn.connect(function(err){
+        if(err){
+            return callback(err, null)
+        } else{
+          const findAllUsersQuery = "SELECT platform_name,platformid FROM platform;"
+          dbConn.query(findAllUsersQuery, (error,results) => {
+              dbConn.end()
+              if (error) {
+                  return callback(error, null)
+              }
+              if (results.length == 0){
+                return callback("error", null)
+              }
+              return callback(null,results)
+          });
+          }
+    });
+  }
 }
 module.exports = User;

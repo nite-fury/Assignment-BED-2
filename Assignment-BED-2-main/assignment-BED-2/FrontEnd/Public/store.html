@@ -42,8 +42,15 @@
   <section class="bg-dark">
     <div class="d-flex justify-content-center align-items-center">
     <div class="w-50 input-group">
-      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" id="searchbox"/>
-      <button type="button" class="btn btn-outline-primary" id="Search">search</button>
+      <div class="dropdown pe-4">
+        <button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Platforms
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark" id="platres">
+        </ul>
+      </div>
+      <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" id="searchbox"/>
+      <button type="button" class="btn btn-outline-danger ms-2" id="Search">search</button>
     </div>
   </div>
   <main class="mt-5">

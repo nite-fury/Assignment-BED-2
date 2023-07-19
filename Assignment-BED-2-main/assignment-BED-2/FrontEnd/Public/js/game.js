@@ -41,7 +41,7 @@ $(document).ready(function () {
                         <div class="form-outline me-1" style="width: 100px;">
                             <input type="number" value="1" class="form-control" />
                         </div>
-                        <button class="btn btn-primary ms-1" type="submit">
+                        <button class="btn btn-danger ms-1" type="submit">
                             Add to cart
                             <i class="fas fa-shopping-cart ms-1"></i>
                         </button>
@@ -77,7 +77,7 @@ $(document).ready(function () {
                         <textarea class="form-control" id="textArea" rows="4" maxlength = "200"></textarea>
                       </div>
                       <div class="d-flex justify-content-between mt-3">
-                        <button type="button" class="btn btn-primary" id="post">Post</button>
+                        <button type="button" class="btn btn-danger" id="post">Post</button>
                       </div>
                       <p class="bold text-danger" id="error"></p>
                     </div>
@@ -141,8 +141,8 @@ $(document).ready(function () {
           <h6 class="fw-bold mb-1 text-capitalize">${info.username}</h6>
           <div class="d-flex align-items-center mb-3">
             <p class="mb-0">
-              <span class="badge bg-primary">${info.created_at}</span>
-              <span class="badge bg-primary">${info.rating}/5 Rating</span>
+              <span class="badge bg-danger">${info.created_at}</span>
+              <span class="badge bg-danger">${info.rating}/5 Rating</span>
             </p>
           </div>
           <p class="mb-0 text-wrap">

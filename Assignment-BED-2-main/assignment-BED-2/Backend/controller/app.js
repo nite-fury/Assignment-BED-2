@@ -57,7 +57,7 @@ app.post("/users/signup", (req,res,next) => {
 })
 
 app.get("/game",(req,res,next) => {
-    user.findAll((error, results) => {
+    user.   findAll((error, results) => {
         if (error || results == null) {
             res.status(500).send("Internal Server Error")
             return
@@ -114,7 +114,7 @@ app.get("/review/:gid", function(req,res){
     })
 })
 
-app.get("/game/plat/:pid", function(req, res){
+app.get("/gameplat/:pid", function(req, res){
     var pid = req.params.pid;
     user.searchgamebypid(pid, function(err, result){
         if(!err){
@@ -123,6 +123,17 @@ app.get("/game/plat/:pid", function(req, res){
             res.status(500).send("Some error");
         }
     });
+})
+
+app.get("/gameplat", function(req,res){
+    user.getallpid(function(err,result){
+        if(!err){
+            res.status(200).send(result)
+        }
+        else{
+            res.status(500).send("Some error");
+        }
+    })
 })
 
 app
