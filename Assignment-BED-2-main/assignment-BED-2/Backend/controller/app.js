@@ -136,5 +136,16 @@ app.get("/gameplat", function(req,res){
     })
 })
 
+app.get("/gamecat", function(req,res){
+    user.getcat(function(err,result){
+        if(!err){
+            res.status(200).send(result)
+        }
+        else {
+            res.status(500).send("Some error");
+        }
+    })
+})
+
 app
 module.exports = app

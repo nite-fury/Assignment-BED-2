@@ -11,7 +11,6 @@ $(document).ready(function () {
 </svg> <span class="text-capitalize">${local[0].username}</span>
   </button>
   <ul class="dropdown-menu dropdown-menu-dark">
-    <li><a class="dropdown-item" href="profile.html">Profile</a></li>
     <li><a class="dropdown-item" href="cart.html">Cart</a></li>
     <li><a class="dropdown-item" href="logout.html" id="logout">Logout</a></li>
   </ul>
@@ -26,8 +25,9 @@ $(document).ready(function () {
 </svg> <span class="text-capitalize">${local[0].username}</span>
   </button>
   <ul class="dropdown-menu dropdown-menu-dark">
-    <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-    <li><a class="dropdown-item" href="admin.html">Admin Panel</a></li>
+    <li><a class="dropdown-item" href="add game.html"> Add Game</a></li>
+    <li><a class="dropdown-item" href="add platform.html"> Add Platform</a></li>
+    <li><a class="dropdown-item" href="add category.html"> Add Category</a></li>
     <li><a class="dropdown-item" href="logout.html" id="logout">Logout</a></li>
   </ul>
 </div>`);

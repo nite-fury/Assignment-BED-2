@@ -49,10 +49,8 @@ const User = {
 
         return callback(err, null);
       } else {
-        profile_pic_url="placeholder.jpg"
-        type = "customer"
-        const insertQuery ="INSERT INTO users (username, email, password, type, profile_pic_url) VALUES (?, ?, ?, ?, ?);";
-        dbConn.query(insertQuery, [user.username, user.email, user.password, type, profile_pic_url], (error, results) => {
+        const insertQuery ="INSERT INTO users (username, email, password) VALUES (?, ?, ?);";
+        dbConn.query(insertQuery, [user.username, user.email, user.password], (error, results) => {
           dbConn.end()
           if (error) {
             return callback(error, null);
@@ -206,6 +204,26 @@ const User = {
             return callback(err, null)
         } else{
           const findAllUsersQuery = "SELECT platform_name,platformid FROM platform;"
+          dbConn.query(findAllUsersQuery, (error,results) => {
+              dbConn.end()
+              if (error) {
+                  return callback(error, null)
+              }
+              if (results.length == 0){
+                return callback("error", null)
+              }
+              return callback(null,results)
+          });
+          }
+    });
+  },
+  getcat: function(callback) {
+    dbConn = db.getConnection()
+    dbConn.connect(function(err){
+        if(err){
+            return callback(err, null)
+        } else{
+          const findAllUsersQuery = "SELECT catname,catid FROM category;"
           dbConn.query(findAllUsersQuery, (error,results) => {
               dbConn.end()
               if (error) {
