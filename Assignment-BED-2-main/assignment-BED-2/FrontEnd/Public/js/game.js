@@ -31,6 +31,7 @@ $(document).ready(function () {
                     <p class="lead">
                             ${data[0].title}
                     </p>
+                    <p>Published: ${data[0].year}</p>
         
                     <strong><p style="font-size: 20px;">Description</p></strong>
         
@@ -79,7 +80,6 @@ $(document).ready(function () {
                       <div class="d-flex justify-content-between mt-3">
                         <button type="button" class="btn btn-danger" id="post">Post</button>
                       </div>
-                      <p class="bold text-danger" id="error"></p>
                     </div>
                   </div>
                 </div>
@@ -90,7 +90,6 @@ $(document).ready(function () {
       </section>`)
     }
     $("#post").click(function (){
-      if($.trim($('#textarea').val()).length > 0){
       let headers = {
         authorization: 'Bearer ' + localStorage.token
     }
@@ -118,11 +117,6 @@ $(document).ready(function () {
             }
           })
           location.reload()
-        }
-        else {
-          $('#error').empty()
-          $('#error').append(`No Comment `)
-        }
     })
     $.ajax({
       url: 'http://localhost:8081/review/' + sessionStorage.gameid,

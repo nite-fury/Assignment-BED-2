@@ -117,7 +117,7 @@ const User = {
 			}
 			else {
 				console.log("***Connected!");
-				var sql = ` SELECT game.gameid,game.image_url, category.catname,game.description, game.title FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid JOIN gamecategory ON game.gameid = gamecategory.gameid JOIN category ON gamecategory.catid = category.catid WHERE gameprices.priceid = ?`;
+				var sql = ` SELECT game.gameid,game.image_url, category.catname,game.description, game.title, game.year FROM game JOIN gameprices ON game.gameid = gameprices.gameid JOIN platform ON gameprices.platformid= platform.platformid JOIN gamecategory ON game.gameid = gamecategory.gameid JOIN category ON gamecategory.catid = category.catid WHERE gameprices.priceid = ?`;
 				conn.query(sql, [search], function (err, result) {
 					conn.end();
 					if (err) {
