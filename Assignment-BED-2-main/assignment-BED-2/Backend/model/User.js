@@ -236,6 +236,131 @@ const User = {
           });
           }
     });
+  },
+  insertgame: function (game,img_name, callback) {
+    var dbConn = db.getConnection();
+    dbConn.connect(function (err) {
+      if (err) {//database connection got issue!
+        return callback(err, null);
+      } 
+      else {
+         price = game.price
+         platformid = game.platformid
+         categoryid = game.categoryid
+         splitcat = categoryid.split(",")
+         splitprice = price.split(",")
+         splitplatform = platformid.split(",")    
+         if (splitprice.length == splitplatform.length){
+          console.log("price length check PASS")
+          platformidsql = [] 
+          correctplat = []
+          wrongplat = []
+          catidsql = []
+          wrongcatid = []
+          correctcatid = []
+          const checkplatform = "SELECT platformid FROM platform;"
+          dbConn.query(checkplatform, (error, result) => {
+            if (error || result == null || result.length == 0) {
+              console.log("platform check FAIL")
+              return callback(null, null);
+            }
+            else {
+              platformidsql.push(result)
+            }
+            console.log(platformidsql)
+            console.log(splitplatform)
+            if (platformidsql[0].length >= splitplatform.length){
+              console.log("platform check PASS")
+          for (i = 0; i < platformidsql[0].length; i++){
+            for (a = 0;a < splitplatform.length; a++){
+            if (splitplatform[a] == platformidsql[0][i].platformid){
+              correctplat.push(splitplatform[a])
+            }
+            else {
+              wrongplat.push(splitplatform[a])
+            }
+          }
+        }
+      }
+      else {
+        console.log("platform check FAIL")
+        return callback(null, null)
+      }
+        const checkcategory = "SELECT catid FROM category;"
+        dbConn.query(checkcategory, (error, catresult) => {
+          console.log(catresult)
+          if (error || catresult == null || catresult.length == 0){
+            console.log(error)
+            console.log(catresult)
+            console.log("category check FAIL 1")
+            return callback(null, null);
+          }
+          else {
+            catidsql.push(catresult)
+          }
+          if (catidsql[0].length >= splitcat.length){
+            console.log("category check PASS")
+          for (i = 0; i < catidsql[0].length; i++){
+            for (a = 0;a < splitcat.length; a++){
+            if (splitcat[a] == catidsql[0][i].catid){
+              correctcatid.push(splitcat[a])
+            }
+            else {
+              wrongcatid.push(splitcat[a])
+            }
+          }
+        }
+      }
+      else {
+        console.log("category check FAIL")
+        return callback(null, null)
+      }
+        if (correctplat.length == splitplatform.length && correctcatid.length == splitcat.length){
+          console.log("Game insert PASS")
+         const gameisertquery = "INSERT INTO game (title, description, year, image_url) VALUES (?, ?, ?, ?);";
+         dbConn.query(gameisertquery, [game.title, game.description, game.year, img_name], (error, gameresults) => {
+          if (error) {
+            console.log(error)
+            return callback(error, null);
+          }
+          gameres = gameresults.insertId
+        for (i = 0; i < splitprice.length; i++) {
+            console.log("Price insert PASS")
+        const insertQuery ="INSERT INTO gameprices (gameid, price, platformid) VALUES (?, ?, ?);";
+        dbConn.query(insertQuery, [gameres, splitprice[i], splitplatform[i]], (error, results) => {
+          if (error) {
+            console.log(error)
+            return callback(error, null)
+          }
+        });
+       }
+       for(catids = 0; catids < splitcat.length; catids++){
+        console.log("insert into price PASS")
+        const inserttogamecat = "INSERT INTO gamecategory (gameid, catid) VALUES (?, ?);";
+        dbConn.query(inserttogamecat, [gameres, splitcat[catids]], (error, results) => {
+          if (error){
+            return callback(error, null);
+          }
+          console.log("Inserted into new category")
+        });
+       }
+       dbConn.end()  
+       return callback(null, gameresults);          
+      });
+      }
+      else{
+        console.log("platid and catid length check FAIL")
+        return callback(null, null)
+      }
+    });
+    }); 
+    }
+    else {
+      console.log("length check fail")
+      return callback(null, null)
+    }
+  }
+  });
   }
 }
 module.exports = User;

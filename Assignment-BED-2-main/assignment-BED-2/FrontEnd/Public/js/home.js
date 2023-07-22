@@ -27,7 +27,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu dropdown-menu-dark">
     <li><a class="dropdown-item" href="add game.html"> Add Game</a></li>
     <li><a class="dropdown-item" href="add platform.html"> Add Platform</a></li>
-    <li><a class="dropdown-item" href="add category.html"> Add Category</a></li>
     <li><a class="dropdown-item" href="logout.html" id="logout">Logout</a></li>
   </ul>
 </div>`);

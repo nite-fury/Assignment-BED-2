@@ -43,6 +43,7 @@
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <form id="add_game">
           <div class="card bg-light text-dark" style="border-radius: 1rem; width: auto;">
             <div class="card-header text-center">
               <h1>Add Games</h1>
@@ -51,13 +52,13 @@
               
               <div class="mb-md-5 mt-md-4 pb-5 me-5">
                 <div class="form-outline mb-4">
-                  <input type="text" id="title" class="form-control form-control-lg bg-light text-dark" placeholder="Title"/>
+                  <input name="title" type="text" id="title" class="form-control form-control-lg bg-light text-dark" placeholder="Title"/>
                 </div>
                 <div class="form-outline mb-4">
-                    <textarea class="form-control bg-light" id="textArea" rows="4" maxlength = "200" placeholder="Description"></textarea>
+                    <textarea name="description" class="form-control bg-light" id="textArea" rows="4" maxlength = "200" placeholder="Description"></textarea>
                   </div>
                   <div class="form-outline mb-4">
-                    <input type="text" id="year" class="form-control form-control-lg bg-light text-dark" placeholder="Year"/>
+                    <input name="year" type="text" id="year" class="form-control form-control-lg bg-light text-dark" placeholder="Year"/>
                   </div>
                 </div> 
                 <div>
@@ -68,10 +69,11 @@
                   <h5 class="text-uppercase">platform</h5>
                   <div id="platform">
                     </div>
-                    <button type="submit" id="submit" class="btn btn-outline-dark btn-lg px-5 mt-5">Submit</button>
+                    <button type="submit" id="submit" class="btn btn-outline-dark btn-lg px-5 mt-5" form="add_game">Submit</button>
                   </div>
                 </div>            
             </div>
+          </form>
           </div>
         </div>
       </div>

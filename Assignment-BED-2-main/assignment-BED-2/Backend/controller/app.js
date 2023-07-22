@@ -10,7 +10,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false})
 app.use(bodyParser.json())
 app.use(urlencodedParser)
 var cors = require('cors');
-
+const upload = require('../upload/multer')
 app.options('*',cors());
 app.use(cors());
 var urlencodedParser=bodyParser.urlencoded({extended:false})
@@ -144,6 +144,19 @@ app.get("/gamecat", function(req,res){
         else {
             res.status(500).send("Some error");
         }
+    })
+})
+
+app.post("/game", upload.single('file'),(req,res) => {
+    user.insertgame(req.body, req.file.filename, (error, results) => {
+        if(error || results == null){
+            res.status(500).send("Internal Server Error")
+            return
+        }
+        else {
+            res.status(201).send({"gameid":results.insertId})
+        }
+
     })
 })
 
