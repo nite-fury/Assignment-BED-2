@@ -73,11 +73,14 @@ $(document).ready(function () {
         e.preventDefault()
         const data = Object.fromEntries(new FormData(e.target).entries());
         console.log(data)
-        $("input:checked").each((element)=>{
-                console.log(element)
-            });
-        $(":input[type='number']").each((element) => {
-            console.log(element);
+        $("input:checked").each((data)=>{
+                console.log(data)
+                console.log("checkbox")
+            }
+        )
+        $(":input[type='number']").each((index, element) => {
+            console.log(element.value);
+            console.log("price box");
         });
     
         return false
