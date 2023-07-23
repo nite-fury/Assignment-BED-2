@@ -10,7 +10,7 @@ $(document).ready(function () {
                 console.log(data[cat])
                 tmphtml += `
                 <div class="form-check mb-1">
-                <input class="form-check-input" type="checkbox" value=${data[cat].catid} id=${data[cat].catid}>
+                <input class="form-check-input" type="checkbox" form="add_game" value=${data[cat].catid} id=${data[cat].catid}>
                 <label class="form-check-label" for=${data[cat].catid}>
                 ${data[cat].catname}
                 </label>
@@ -18,6 +18,7 @@ $(document).ready(function () {
                 `
             }
             $('#categories').append(tmphtml)
+            // Use .each() to iterate through each element with the class "form-check-input"
             $.ajax({
                 url: 'http://localhost:8081/gameplat',
                 type: 'GET',
@@ -30,7 +31,7 @@ $(document).ready(function () {
                         console.log(data[plat])
                         tmphtml += `
                         <div class="form-check mb-1">
-                        <input class="form-check-input" type="checkbox" value="${data[plat].platformid}" id="id_${data[plat].platformid}">
+                        <input class="form-check-input" type="checkbox" form="add_game" value="${data[plat].platformid}" id="id_${data[plat].platformid}">
                         <label class="form-check-label" for="${data[plat].platformid}" value="${data[plat].platformid}">
                         ${data[plat].platform_name}
                         </label>
@@ -47,7 +48,7 @@ $(document).ready(function () {
                             if ($("#id_"+id).is(":checked")){
                                 $('#price_'+id).empty()
                                 $('#price_'+id).append(`
-                                <input type="text" id="price${id}" class="form-control form-control-sm bg-light text-dark" placeholder="Price"/>
+                                <input type="number" id="price${id}" form="add_game" class="form-control form-control-sm bg-light text-dark" placeholder="Price"/>
                                 `)
                             }
                             else if (!$("#id_"+id).is(":checked")){
@@ -68,11 +69,19 @@ $(document).ready(function () {
             console.log("Failed to pull cat data!");
         }
     })
-    document.querySelector('form').addEventListener('submit', (e) => {
+    $("#add_game").submit((e)=>{
         e.preventDefault()
         const data = Object.fromEntries(new FormData(e.target).entries());
         console.log(data)
-      });
+        $("input:checked").each((element)=>{
+                console.log(element)
+            });
+        $(":input[type='number']").each((element) => {
+            console.log(element);
+        });
+    
+        return false
+    }) 
     // $("#add_game").submit((e) => {
         
     //     let loginForm = $(this.serializeArray())
