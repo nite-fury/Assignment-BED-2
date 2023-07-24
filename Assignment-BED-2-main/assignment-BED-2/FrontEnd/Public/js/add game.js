@@ -69,29 +69,7 @@ $(document).ready(function () {
             console.log("Failed to pull cat data!");
         }
     });
-    
-    // $("#add_game").submit((e)=>{
-    //     e.preventDefault()
-    //     console.log($('#title').val())
-    //     console.log($('#desc').val())
-    //     console.log($('#year').val())
-    //     $('.cat:checked').each(function() {
-    //         var checkboxId = $(this).attr('id');    
-    //         console.log(checkboxId);
-    //       });
-    //       $('.plat:checked').each(function() {
-    //         var checkboxId = $(this).attr('id');    
-    //         console.log(checkboxId);
-    //       });
-    //     $(".priceval").each(function() {
-    //         var checkboxId = $(this).attr('id');    
-    //         console.log(checkboxId +"|"+$("#"+checkboxId).val());
-    //     });
-    
-    //     return false
-    // }) 
     $("#add_game").submit((e) => {
-        e.preventDefault()
         e.preventDefault()
         cat = []
         plat = []
@@ -131,10 +109,18 @@ $(document).ready(function () {
         }
         console.log(JSON.stringify(data))
         if (platprice.length != plat.length){
-            console.log("error")
+            $('#msg').text("Failed to submit")
+        }
+        else if (cat.length === 0){
+            $('#msg').text("Failed to submit")
         }
         else{
+        let headers = {
+            authorization: 'Bearer ' + localStorage.token
+        }
+        console.log(headers)
         $.ajax({    
+            headers: headers,
             url: 'http://localhost:8081/game',
             type: 'POST',
             data: JSON.stringify(data),
@@ -145,7 +131,6 @@ $(document).ready(function () {
                     $('#msg').text("Failed to submit")
                     return;
                 }
-                location.reload()
                 $('#msg').text("Data has been submitted Successfully!")
             },
             error: (xhr, status, err) => {
@@ -154,5 +139,6 @@ $(document).ready(function () {
             }
         })
         }
+        return false;
     })
 })

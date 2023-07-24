@@ -147,7 +147,7 @@ app.get("/gamecat", function(req,res){
     })
 })
 
-app.post("/game", (req,res) => {
+app.post("/game",  verifyToken,(req,res) => {
     user.insertgame(req.body, (error, results) => {
         if(error || results == null){
             res.status(500).send("Internal Server Error")
