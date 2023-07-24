@@ -237,20 +237,17 @@ const User = {
           }
     });
   },
-  insertgame: function (game,img_name, callback) {
+  insertgame: function (game,callback) {
     var dbConn = db.getConnection();
     dbConn.connect(function (err) {
       if (err) {//database connection got issue!
         return callback(err, null);
       } 
       else {
-         price = game.price
-         platformid = game.platformid
-         categoryid = game.categoryid
-         splitcat = categoryid.split(",")
-         splitprice = price.split(",")
-         splitplatform = platformid.split(",")    
-         if (splitprice.length == splitplatform.length){
+         price = game.platprice
+         platformid = game.plat
+         categoryid = game.cat
+         if (price.length == platformid.length){
           console.log("price length check PASS")
           platformidsql = [] 
           correctplat = []
@@ -268,16 +265,16 @@ const User = {
               platformidsql.push(result)
             }
             console.log(platformidsql)
-            console.log(splitplatform)
-            if (platformidsql[0].length >= splitplatform.length){
+            console.log(platformid)
+            if (platformidsql[0].length >= platformid.length){
               console.log("platform check PASS")
           for (i = 0; i < platformidsql[0].length; i++){
-            for (a = 0;a < splitplatform.length; a++){
-            if (splitplatform[a] == platformidsql[0][i].platformid){
-              correctplat.push(splitplatform[a])
+            for (a = 0;a < platformid.length; a++){
+            if (platformid[a] == platformidsql[0][i].platformid){
+              correctplat.push(platformid[a])
             }
             else {
-              wrongplat.push(splitplatform[a])
+              wrongplat.push(platformid[a])
             }
           }
         }
@@ -298,15 +295,15 @@ const User = {
           else {
             catidsql.push(catresult)
           }
-          if (catidsql[0].length >= splitcat.length){
+          if (catidsql[0].length >= categoryid.length){
             console.log("category check PASS")
           for (i = 0; i < catidsql[0].length; i++){
-            for (a = 0;a < splitcat.length; a++){
-            if (splitcat[a] == catidsql[0][i].catid){
-              correctcatid.push(splitcat[a])
+            for (a = 0;a < categoryid.length; a++){
+            if (categoryid[a] == catidsql[0][i].catid){
+              correctcatid.push(categoryid[a])
             }
             else {
-              wrongcatid.push(splitcat[a])
+              wrongcatid.push(categoryid[a])
             }
           }
         }
@@ -315,29 +312,29 @@ const User = {
         console.log("category check FAIL")
         return callback(null, null)
       }
-        if (correctplat.length == splitplatform.length && correctcatid.length == splitcat.length){
+        if (correctplat.length == platformid.length && correctcatid.length == categoryid.length){
           console.log("Game insert PASS")
-         const gameisertquery = "INSERT INTO game (title, description, year, image_url) VALUES (?, ?, ?, ?);";
-         dbConn.query(gameisertquery, [game.title, game.description, game.year, img_name], (error, gameresults) => {
+         const gameisertquery = "INSERT INTO game (title, description, year) VALUES (?, ?, ?);";
+         dbConn.query(gameisertquery, [game.title, game.desc, game.year], (error, gameresults) => {
           if (error) {
             console.log(error)
             return callback(error, null);
           }
           gameres = gameresults.insertId
-        for (i = 0; i < splitprice.length; i++) {
+        for (i = 0; i < price.length; i++) {
             console.log("Price insert PASS")
         const insertQuery ="INSERT INTO gameprices (gameid, price, platformid) VALUES (?, ?, ?);";
-        dbConn.query(insertQuery, [gameres, splitprice[i], splitplatform[i]], (error, results) => {
+        dbConn.query(insertQuery, [gameres, price[i], platformid[i]], (error, results) => {
           if (error) {
             console.log(error)
             return callback(error, null)
           }
         });
        }
-       for(catids = 0; catids < splitcat.length; catids++){
+       for(catids = 0; catids < categoryid.length; catids++){
         console.log("insert into price PASS")
         const inserttogamecat = "INSERT INTO gamecategory (gameid, catid) VALUES (?, ?);";
-        dbConn.query(inserttogamecat, [gameres, splitcat[catids]], (error, results) => {
+        dbConn.query(inserttogamecat, [gameres, categoryid[catids]], (error, results) => {
           if (error){
             return callback(error, null);
           }

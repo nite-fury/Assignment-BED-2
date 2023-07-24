@@ -147,8 +147,8 @@ app.get("/gamecat", function(req,res){
     })
 })
 
-app.post("/game", upload.single('file'),(req,res) => {
-    user.insertgame(req.body, req.file.filename, (error, results) => {
+app.post("/game", (req,res) => {
+    user.insertgame(req.body, (error, results) => {
         if(error || results == null){
             res.status(500).send("Internal Server Error")
             return

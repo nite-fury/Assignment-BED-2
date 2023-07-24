@@ -116,7 +116,9 @@ $(document).ready(function () {
         $(".priceval").each(function() {
             var checkboxId = $(this).attr('id');    
             console.log(checkboxId +"|"+$("#"+checkboxId).val());
-            platprice.push($("#"+checkboxId).val());
+            if ($("#"+checkboxId).val().length != 0){
+                platprice.push($("#"+checkboxId).val());
+            }
 
         });        
         let data = {
@@ -128,6 +130,10 @@ $(document).ready(function () {
             platprice: platprice
         }
         console.log(JSON.stringify(data))
+        if (platprice.length != plat.length){
+            console.log("error")
+        }
+        else{
         $.ajax({    
             url: 'http://localhost:8081/game',
             type: 'POST',
@@ -147,5 +153,6 @@ $(document).ready(function () {
                 $('#msg').text("Failed to submit")
             }
         })
+        }
     })
 })
