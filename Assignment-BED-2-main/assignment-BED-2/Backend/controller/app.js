@@ -148,16 +148,23 @@ app.get("/gamecat", function(req,res){
 })
 
 app.post("/game",  verifyToken,(req,res) => {
-    user.insertgame(req.body, (error, results) => {
-        if(error || results == null){
-            res.status(500).send("Internal Server Error")
-            return
-        }
-        else {
-            res.status(201).send({"gameid":results.insertId})
-        }
+    console.log(req.type)
+    if (req.type == "admin"){
+        user.insertgame(req.body, (error, results) => {
+            if(error || results == null){
+                res.status(500).send("Internal Server Error")
+                return
+            }
+            else {
+                res.status(201).send({"gameid":results.insertId})
+            }
+    
+        })
+    }
+    else{
+        res.status(403).send("Forbidden 403")
+    }
 
-    })
 })
 
 app

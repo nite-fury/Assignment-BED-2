@@ -26,7 +26,8 @@ const User = {
             var token = "";
             var i;
             if (result.length == 1){
-              token = jwt.sign({ id: result[0].userid, type: result[0].role}, config.key, {
+              console.log(result[0].type)
+              token = jwt.sign({ id: result[0].userid, type: result[0].type}, config.key, {
                 expiresIn: 86400
               });
               return callback(null, token, result);
