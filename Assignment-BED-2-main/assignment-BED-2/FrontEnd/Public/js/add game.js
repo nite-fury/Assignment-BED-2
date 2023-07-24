@@ -10,7 +10,7 @@ $(document).ready(function () {
                 console.log(data[cat])
                 tmphtml += `
                 <div class="form-check mb-1">
-                <input class="form-check-input myCheckbox" type="checkbox" form="add_game" value=${data[cat].catid} id="cat_id${data[cat].catid}">
+                <input class="form-check-input cat" type="checkbox" form="add_game" value=${data[cat].catid} id="catid_${data[cat].catid}">
                 <label class="form-check-label" for=${data[cat].catid}>
                 ${data[cat].catname}
                 </label>
@@ -31,7 +31,7 @@ $(document).ready(function () {
                         console.log(data[plat])
                         tmphtml += `
                         <div class="form-check mb-1">
-                        <input class="form-check-input myCheckbox" type="checkbox" form="add_game" value=${data[plat].platformid} id="platid_${data[plat].platformid}">
+                        <input class="form-check-input plat" type="checkbox" form="add_game" value=${data[plat].platformid} id="platid_${data[plat].platformid}">
                         <label class="form-check-label" for="${data[plat].platformid}" value=platid${data[plat].platformid}>
                         ${data[plat].platform_name}
                         </label>
@@ -70,25 +70,64 @@ $(document).ready(function () {
         }
     });
     
-    $("#add_game").submit((e)=>{
+    // $("#add_game").submit((e)=>{
+    //     e.preventDefault()
+    //     console.log($('#title').val())
+    //     console.log($('#desc').val())
+    //     console.log($('#year').val())
+    //     $('.cat:checked').each(function() {
+    //         var checkboxId = $(this).attr('id');    
+    //         console.log(checkboxId);
+    //       });
+    //       $('.plat:checked').each(function() {
+    //         var checkboxId = $(this).attr('id');    
+    //         console.log(checkboxId);
+    //       });
+    //     $(".priceval").each(function() {
+    //         var checkboxId = $(this).attr('id');    
+    //         console.log(checkboxId +"|"+$("#"+checkboxId).val());
+    //     });
+    
+    //     return false
+    // }) 
+    $("#add_game").submit((e) => {
         e.preventDefault()
+        e.preventDefault()
+        cat = []
+        plat = []
+        platprice = []
         console.log($('#title').val())
         console.log($('#desc').val())
         console.log($('#year').val())
-        $('.myCheckbox:checked').each(function(data) {
+        $('.cat:checked').each(function() {
             var checkboxId = $(this).attr('id');    
-            console.log(checkboxId);
+            var parts = checkboxId.split('_');
+            var pureid = parts[1]; 
+            console.log(pureid);
+            cat.push(pureid)
           });
-          
+          $('.plat:checked').each(function() {
+            var checkboxId = $(this).attr('id');   
+            var parts = checkboxId.split('_');
+            var pureid = parts[1]; 
+            console.log(pureid);
+            plat.push(pureid)
+          });
         $(".priceval").each(function() {
             var checkboxId = $(this).attr('id');    
             console.log(checkboxId +"|"+$("#"+checkboxId).val());
-        });
-    
-        return false
-    }) 
-    $("#add_game").submit((e) => {
-        e.preventDefault()        
+            platprice.push($("#"+checkboxId).val());
+
+        });        
+        let data = {
+            title: $('#title').val(),
+            desc: $('#desc').val(),
+            year: $('#year').val(),
+            cat: cat,
+            plat: plat,
+            platprice: platprice
+        }
+        console.log(JSON.stringify(data))
         $.ajax({    
             url: 'http://localhost:8081/game',
             type: 'POST',
