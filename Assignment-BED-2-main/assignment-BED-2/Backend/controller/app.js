@@ -167,5 +167,30 @@ app.post("/game",  verifyToken,(req,res) => {
 
 })
 
+app.post("/platform", verifyToken,(req,res,next) => {
+    if (req.type == "admin"){
+    user.insertplat(req.body, (error) =>{
+        if (error != null){
+            if(error.errno == 1062){
+                res.status(422).send("Unprocessable Entity")
+                return
+             }
+        }
+        if(error){
+            console.log(error)
+            res.status(500).send("Internal Server Error")
+            return
+         }
+         else {
+             res.status(201).send({success: true})
+         }
+         
+    })
+    }
+    else {
+        res.status(403).send("Forbidden 403")
+    }
+})
+
 app
 module.exports = app

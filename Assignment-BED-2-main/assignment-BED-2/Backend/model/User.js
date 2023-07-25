@@ -359,6 +359,25 @@ const User = {
     }
   }
   });
+  },
+  insertplat: function (plat, callback) {
+    var dbConn = db.getConnection();
+    dbConn.connect(function (err) {
+
+      if (err) {//database connection got issue!
+        return callback(err, null);
+      } else {
+        const insertQuery ="INSERT INTO platform (platform_name, description) VALUES (?, ?);";
+        dbConn.query(insertQuery, [plat.platform_name, plat.description], (error, results) => {
+          dbConn.end()
+          if (error) {
+            console.log(error)
+            return callback(error, null);
+          }
+          return callback(null, results);
+        });
+      }
+    });
   }
 }
 module.exports = User;
