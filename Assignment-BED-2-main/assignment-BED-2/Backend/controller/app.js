@@ -57,7 +57,7 @@ app.post("/users/signup", (req,res,next) => {
 })
 
 app.get("/game",(req,res,next) => {
-    user.   findAll((error, results) => {
+    user.findAll((error, results) => {
         if (error || results == null) {
             res.status(500).send("Internal Server Error")
             return
