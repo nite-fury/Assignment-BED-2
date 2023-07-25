@@ -114,6 +114,9 @@ $(document).ready(function () {
         else if (cat.length === 0){
             $('#msg').text("Failed to submit")
         }
+        else if (plat.length === 0 ){
+            $('#msg').text("Failed to submit")
+        }
         else{
         let headers = {
             authorization: 'Bearer ' + localStorage.token
