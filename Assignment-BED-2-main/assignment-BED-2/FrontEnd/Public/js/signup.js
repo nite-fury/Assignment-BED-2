@@ -10,7 +10,7 @@ $(document).ready(function () {
             return;
       }
       $.ajax({
-        url: 'http://localhost:8081/users/signup',
+        url: 'http://localhost:8081/users/',
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
