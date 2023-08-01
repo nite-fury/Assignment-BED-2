@@ -55,7 +55,7 @@ app.post("/users/", (req,res,next) => {
         }
     })
 })
-
+// modified
 app.get("/game",(req,res,next) => {
     user.findAll((error, results) => {
         if (error || results == null) {
@@ -66,7 +66,7 @@ app.get("/game",(req,res,next) => {
     })
 })
 
-app.get('/game/:search',function(req, res){
+app.get('/games/:search',function(req, res){
     var search = req.params.search;
     parsesearch =  "%"+search+"%"
     user.searchgame(parsesearch, function(err, result){
@@ -160,6 +160,17 @@ app.get("/gameplat/:platform", function(req, res){
     });
 })
 
+app.get("/gameplat", function(req,res){
+    user.getallpid(function(err,result){
+        if(!err){
+            res.status(200).send(result)
+        }
+        else{
+            res.status(500).send("Some error");
+        }
+    })
+})
+
 // app.get("/game/:platform", (req,res) => {
 //     const platID = req.params.platform
 //     if(platID == null || platID == undefined){
@@ -176,17 +187,6 @@ app.get("/gameplat/:platform", function(req, res){
 //         }
 //     })
 // })
-
-app.get("/gameplat", function(req,res){
-    user.getallpid(function(err,result){
-        if(!err){
-            res.status(200).send(result)
-        }
-        else{
-            res.status(500).send("Some error");
-        }
-    })
-})
 
 app.get("/gamecat", function(req,res){
     user.getcat(function(err,result){
