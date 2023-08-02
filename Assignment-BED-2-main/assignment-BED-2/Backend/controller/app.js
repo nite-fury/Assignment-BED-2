@@ -90,7 +90,7 @@ app.get("/game/desc/:priceid",function(req,res){
 })
 
 app.post("/review",verifyToken,function(req,res){
-    user.reviewpost(req.body,req.userid, (error,result) => {
+    user.postreview(req.body,req.userid, (error,result) => {
         if(error){
             console.log(error)
             res.status(500).send("Internal Server Error")
@@ -120,31 +120,19 @@ app.post("/user/:uid/game/:gid/review/", verifyToken,(req,res,next) => {
     })
 })
 
-// app.get("/game/:id/review", (req,res,next) => {
-//     const gid = parseInt(req.params.id)
-//     if(isNaN(gid)) {
-//         res.status(500).send("Interal Server Error")
-//         return
-//     }
-//     user.getreview(gid,(error,results) => {
-//         if(error || results == null){
-//             res.status(500).send("Internal Server Error")
-//             return
-//         }
-//         else {
-//             res.status(200).send(results)
-//         }
-//     })
-// })
-
-app.get("/user/review/:gid", function(req,res){
-    const gameid = req.params.gid
-    user.getreview(gameid, function(err,result){
-        if(!err){
-            res.status(201).send(result)
+app.get("/game/:id/review", (req,res,next) => {
+    const gid = parseInt(req.params.id)
+    if(isNaN(gid)) {
+        res.status(500).send("Interal Server Error")
+        return
+    }
+    user.getreview(gid,(error,results) => {
+        if(error || results == null){
+            res.status(500).send("Internal Server Error")
+            return
         }
-        else{
-            res.status(500).send("Some error")
+        else {
+            res.status(200).send(results)
         }
     })
 })
@@ -171,22 +159,22 @@ app.get("/gameplat", function(req,res){
     })
 })
 
-// app.get("/game/:platform", (req,res) => {
-//     const platID = req.params.platform
-//     if(platID == null || platID == undefined){
-//         res.status(500).send("Internal Server Error")
-//         return
-//     }
-//     user.FindByplatname(platID, (error,plat) => {
-//         if (error || plat === null) {
-//             res.status(500).send("Internal Server Error")
-//             return
-//         }
-//         else{
-//             res.status(200).send(plat)
-//         }
-//     })
-// })
+app.get("/gameplat/:platform", (req,res) => {
+    const platID = req.params.platform
+    if(platID == null || platID == undefined){
+        res.status(500).send("Internal Server Error")
+        return
+    }
+    user.FindByplatname(platID, (error,plat) => {
+        if (error || plat === null) {
+            res.status(500).send("Internal Server Error")
+            return
+        }
+        else{
+            res.status(200).send(plat)
+        }
+    })
+})
 
 app.get("/gamecat", function(req,res){
     user.getcat(function(err,result){

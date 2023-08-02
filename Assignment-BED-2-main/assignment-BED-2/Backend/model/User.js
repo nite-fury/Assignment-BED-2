@@ -61,6 +61,31 @@ const User = {
       }
     });
   },
+    //find user by id
+    FindByID: function(UserID, callback) {
+      dbConn = db.getConnection()
+      dbConn.connect(function(err){
+          if (err){
+              return callback(err, null)
+          }
+          else {
+              const FindUserByIDQuery = "SELECT * FROM users WHERE userid = ?;"
+              
+              dbConn.query(FindUserByIDQuery, [UserID], (error, results) => {
+                  dbConn.end()
+  
+                  if (results.length == 0){
+                      callback(null, null)
+                      return
+                  }
+                  if (error) {
+                      return  callback(error,results)
+                  }
+                  return callback(null, results[0])
+              })
+          }
+      })
+    },
   findAll: function(callback) {
     dbConn = db.getConnection()
     dbConn.connect(function(err){
@@ -81,6 +106,26 @@ const User = {
           }
     });
   },
+    //inserting of category
+    insertcat: function (cat, callback) {
+      var dbConn = db.getConnection();
+      dbConn.connect(function (err) {
+  
+        if (err) {//database connection got issue!
+  
+          return callback(err, null);
+        } else {
+          const insertQuery ="INSERT INTO category (catname, description) VALUES (?, ?);";
+          dbConn.query(insertQuery, [cat.catname, cat.description], (error, results) => {
+            dbConn.end()
+            if (error) {
+              return callback(error, null);
+            }
+            return callback(null, results);
+          });
+        }
+      });
+    },
   searchgame: function (search, callback) {
 
 		var conn = db.getConnection();
@@ -129,7 +174,7 @@ const User = {
 			}
 		});
   },
-  reviewpost: function (user, tokenuid, callback) {
+  postreview: function (user, tokenuid, callback) {
     var dbConn = db.getConnection();
     dbConn.connect(function (err) {
 
@@ -137,8 +182,6 @@ const User = {
 
         return callback(err, null);
       } else {
-        profile_pic_url="placeholder.jpg"
-        type = "customer"
         const insertQuery ="INSERT INTO review (gameid, userid, content, rating) VALUES (?, ?, ?, ?);";
         dbConn.query(insertQuery, [user.gameid, tokenuid, user.content, user.rating], (error, results) => {
           dbConn.end()
@@ -174,7 +217,6 @@ const User = {
 		});
   },
   searchgamebypid: function (search, callback) {
-
 		var conn = db.getConnection();
 		conn.connect(function (err) {
 			if (err) {
@@ -198,6 +240,123 @@ const User = {
 			}
 		});
 	},
+  //deleting of game
+  delgame: function(gameID, callback) {
+    dbConn = db.getConnection()
+    dbConn.connect(function(err){
+        if (err){
+            return callback(err, null)
+        }
+        else{
+          const delqery= "DELETE FROM game where gameid = ?;"
+
+          dbConn.query(delqery, [gameID], (error, results) => {
+            dbConn.end()
+
+            if (error) {
+              return callback(error, null)
+            }
+            return callback(null,results)
+          })
+        }
+    })
+  },
+//editing of game
+  editgame: function(gameID,edited, callback) {
+    dbConn = db.getConnection()
+    dbConn.connect(function(err){
+        if (err){
+            return callback(err, null)
+        }
+        else{
+          price = edited.price
+          platform = edited.platformid
+          category = edited.categoryid
+          splitcat = category.split(",")
+          splitprice = price.split(",")
+          splitplatform = platform.split(",")
+          if (splitprice.length == splitplatform.length){
+            platformidsql = []
+            correctplat = []
+            wrongplat = []
+            catidsql = []
+            wrongcatid = []
+            correctcatid = []
+            const checkplatform = "SELECT platformid FROM platform;"
+            dbConn.query(checkplatform, (error, result) => {
+              if (error || result == null || result.length == 0) {
+                console.log(error)
+                return callback(null, null);
+              }
+              else {
+                platformidsql.push(result)
+              }
+            for (i = 0; i < platformidsql[0].length; i++){
+              for (a = 0;a < splitplatform.length; a++){
+              if (splitplatform[a] == platformidsql[0][i].platformid){
+                correctplat.push(splitplatform[a])
+              }
+              else {
+                wrongplat.push(splitplatform[a])
+              }
+            }
+          }
+          const checkcategory = "SELECT catid FROM category;"
+          dbConn.query(checkcategory, (error, catresult) => {
+            if (error || catresult == null || catresult.length == 0){
+              console.log("fail cat length")
+              return callback(null, null);
+            }
+            else {
+              catidsql.push(catresult)
+            }
+            for (i = 0; i < catidsql[0].length; i++){
+              for (a = 0;a < splitcat.length; a++){
+              if (splitcat[a] == catidsql[0][i].catid){
+                correctcatid.push(splitcat[a])
+              }
+              else {
+                wrongcatid.push(splitcat[a])
+              }
+            }
+          }
+          console.log("finalplatformid--------------------")
+        console.log({"correct":correctplat})
+        console.log({"wrong":wrongplat})
+        console.log({"Checked platformid":platformidsql[0]})
+        console.log("finalcatid-------------------------")
+        console.log({"Correct catid":correctcatid})
+        console.log({"wrong catid":wrongcatid})
+        console.log({"checked catid":catidsql[0]})
+        if (correctplat.length == splitplatform.length && correctcatid == splitcat.length && splitprice.length == splitplatform.length){
+          const updategamequery= "UPDATE game SET title = ?, description = ?, price = ?, categoryid = ?, year = ?,platformid =? where gameid = ?;"
+          dbConn.query(updategamequery, [edited.title,edited.description,edited.price,edited.categoryid,edited.year,edited.platformid,gameID], (error, results) => {
+            if (error || results.affectedRows == 0) {
+              return callback(error, null)
+            }
+              for (let i = 0; i < splitprice.length; i++){
+                const updatepricequery = "UPDATE price SET price = ? where gameid = ? AND platform = ?;"
+                dbConn.query(updatepricequery, [splitprice[i],gameID,splitplatform[i]], (error) => {
+                  if (error) {
+                    return callback(error, null)
+                  }
+                }); 
+              }
+            dbConn.end()
+            return callback(null, results)
+          });
+        }
+        else{
+          console.log("fail price check")
+          return callback(null, null)
+        }
+          })
+        })
+          }
+        }
+    })
+  },
+
   getallpid: function(callback) {
     dbConn = db.getConnection()
     dbConn.connect(function(err){

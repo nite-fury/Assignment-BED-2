@@ -119,7 +119,7 @@ $(document).ready(function () {
           location.reload()
     })
     $.ajax({
-      url: 'http://localhost:8081/review/' + sessionStorage.gameid,
+      url: 'http://localhost:8081/game/'+ sessionStorage.gameid +'/review/',
       type: 'GET',
       dataType: 'json',
       success:(data, status, xhr) => {
