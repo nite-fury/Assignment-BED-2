@@ -38,7 +38,7 @@ app.post("/users/login", (req,res) => {
     });
 });
 
-app.post("/users/", (req,res,next) => {
+app.post("/users/signup", (req,res,next) => {
     user.insert(req.body, (error,userID) =>{
         if (error != null){
             if(error.errno == 1062){
@@ -55,7 +55,7 @@ app.post("/users/", (req,res,next) => {
         }
     })
 })
-// modified
+
 app.get("/game",(req,res,next) => {
     user.findAll((error, results) => {
         if (error || results == null) {
@@ -66,7 +66,7 @@ app.get("/game",(req,res,next) => {
     })
 })
 
-app.get('/games/:search',function(req, res){
+app.get('/game/:search',function(req, res){
     var search = req.params.search;
     parsesearch =  "%"+search+"%"
     user.searchgame(parsesearch, function(err, result){
@@ -90,7 +90,7 @@ app.get("/game/desc/:priceid",function(req,res){
 })
 
 app.post("/review",verifyToken,function(req,res){
-    user.postreview(req.body,req.userid, (error,result) => {
+    user.reviewpost(req.body,req.userid, (error,result) => {
         if(error){
             console.log(error)
             res.status(500).send("Internal Server Error")
@@ -102,43 +102,20 @@ app.post("/review",verifyToken,function(req,res){
     })
 })
 
-app.post("/user/:uid/game/:gid/review/", verifyToken,(req,res,next) => {
-    const userid = parseInt(req.params.uid)
-    const gameid = parseInt(req.params.gid)
-    if(isNaN(gameid) || isNaN(userid)) {
-        res.status(500).send("Internal Server Error")
-        return
-    }
-    user.postreview(req.userid,gameid,req.body,(error,results) => {
-        if (error || results == null){
-            res.status(500).send("Internal Server Error")
-            return
+app.get("/review/:gid", function(req,res){
+    const gameid = req.params.gid
+    user.getreview(gameid, function(err,result){
+        if(!err){
+            res.status(200).send(result)
         }
-        else {
-            res.status(201).send({"reiewid":results.insertId})
+        else{
+            res.status(500).send("Some error")
         }
     })
 })
 
-app.get("/game/:id/review", (req,res,next) => {
-    const gid = parseInt(req.params.id)
-    if(isNaN(gid)) {
-        res.status(500).send("Interal Server Error")
-        return
-    }
-    user.getreview(gid,(error,results) => {
-        if(error || results == null){
-            res.status(500).send("Internal Server Error")
-            return
-        }
-        else {
-            res.status(200).send(results)
-        }
-    })
-})
-
-app.get("/gameplat/:platform", function(req, res){
-    var pid = req.params.platform;
+app.get("/gameplat/:pid", function(req, res){
+    var pid = req.params.pid;
     user.searchgamebypid(pid, function(err, result){
         if(!err){
             res.send(result);
@@ -155,23 +132,6 @@ app.get("/gameplat", function(req,res){
         }
         else{
             res.status(500).send("Some error");
-        }
-    })
-})
-
-app.get("/gameplat/:platform", (req,res) => {
-    const platID = req.params.platform
-    if(platID == null || platID == undefined){
-        res.status(500).send("Internal Server Error")
-        return
-    }
-    user.FindByplatname(platID, (error,plat) => {
-        if (error || plat === null) {
-            res.status(500).send("Internal Server Error")
-            return
-        }
-        else{
-            res.status(200).send(plat)
         }
     })
 })
@@ -232,82 +192,5 @@ app.post("/platform", verifyToken,(req,res,next) => {
     }
 })
 
-app.get("/users/",(req,res,next) => {
-    user.findAll((error, results) => {
-        if (error || results == null) {
-            res.status(500).send("Internal Server Error")
-            return
-        }
-        res.status(200).send(results)
-    })
-})
-
-app.get("/users/:id/", (req,res,next) => {
-    const userID = parseInt(req.params.id)
-    if(isNaN(userID)){
-        res.status(500).send("Internal Server Error")
-        return
-    }
-    user.FindByID(userID, (error,user) => {
-        if (error || user === null) {
-            res.status(500).send("Internal Server Error")
-            return
-        }
-        else{
-            res.status(200).send(user)
-        }
-    })
-})
-app.post("/category", (req,res,next) => {
-    user.insertcat(req.body, (error) =>{
-        if (error != null){
-            if(error.errno == 1062){
-                res.status(422).send("Unprocessable Entity")
-                return
-             }
-        }
-        if(error){
-            res.status(500).send("Internal Server Error")
-            return
-        }
-        else {
-            res.status(201).send()
-        }
-    })
-})
-
-app.delete("/game/:id", (req,res,next) => {
-    const gameID = parseInt(req.params.id)
-    if(isNaN(gameID)){
-        res.status(500).send("Internal Server Error")
-        return
-    }
-    user.delgame(gameID,(error) => {
-        if (error){
-            res.status(500).send("Internal Server Error")
-            return
-        }
-        else{
-            res.status(204).send()
-        }
-    })
-})
-
-app.put("/game/:id", (req,res,next) => {
-    const gameID = parseInt(req.params.id)
-    if(isNaN(gameID)){
-        res.status(500).send("Internal Server Error")
-        return
-    }
-    user.editgame(gameID,req.body,(error,results) => {
-        if (error || results == null){
-            res.status(500).send("Internal Server Error")
-            return
-        }
-        else{
-            res.status(204).send()
-        }
-    })
-})
-
+app
 module.exports = app

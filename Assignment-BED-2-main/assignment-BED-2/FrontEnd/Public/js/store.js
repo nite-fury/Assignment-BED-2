@@ -121,7 +121,7 @@ $(document).ready(() => {
   $('#Search').click(() => {
       let searchbox = $('#searchbox').val();
       $.ajax({
-          url: 'http://localhost:8081/games/'+ searchbox,
+          url: 'http://localhost:8081/game/'+ searchbox,
           type: 'GET',
           dataType: 'json',
           success: (data, status, xhr) => {
