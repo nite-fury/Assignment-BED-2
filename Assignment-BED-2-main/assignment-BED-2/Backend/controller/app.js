@@ -18,6 +18,7 @@ var urlencodedParser=bodyParser.urlencoded({extended:false})
 app.use(bodyParser.json())
 app.use(urlencodedParser);
 
+//login
 app.post("/users/login", (req,res) => {
     var email=req.body.email;
     var password=req.body.password;
@@ -38,6 +39,7 @@ app.post("/users/login", (req,res) => {
     });
 });
 
+//registration
 app.post("/users/signup", (req,res,next) => {
     user.insert(req.body, (error,userID) =>{
         if (error != null){
@@ -56,6 +58,7 @@ app.post("/users/signup", (req,res,next) => {
     })
 })
 
+//loading games
 app.get("/game",(req,res,next) => {
     user.findAll((error, results) => {
         if (error || results == null) {
@@ -66,6 +69,7 @@ app.get("/game",(req,res,next) => {
     })
 })
 
+//searching for games
 app.get('/game/:search',function(req, res){
     var search = req.params.search;
     parsesearch =  "%"+search+"%"
@@ -78,6 +82,7 @@ app.get('/game/:search',function(req, res){
     });
 })
 
+//getting game details from server
 app.get("/game/desc/:priceid",function(req,res){
     const priceid = req.params.priceid;
     user.searchpriceid(priceid, function(err,result){
@@ -89,6 +94,7 @@ app.get("/game/desc/:priceid",function(req,res){
     })
 })
 
+//sending review
 app.post("/review",verifyToken,function(req,res){
     user.reviewpost(req.body,req.userid, (error,result) => {
         if(error){
@@ -102,6 +108,7 @@ app.post("/review",verifyToken,function(req,res){
     })
 })
 
+//getting review based on gameid
 app.get("/review/:gid", function(req,res){
     const gameid = req.params.gid
     user.getreview(gameid, function(err,result){
@@ -114,6 +121,7 @@ app.get("/review/:gid", function(req,res){
     })
 })
 
+//getting game based on platform id
 app.get("/gameplat/:pid", function(req, res){
     var pid = req.params.pid;
     user.searchgamebypid(pid, function(err, result){
@@ -125,6 +133,7 @@ app.get("/gameplat/:pid", function(req, res){
     });
 })
 
+//getting platform names and platformid
 app.get("/gameplat", function(req,res){
     user.getallpid(function(err,result){
         if(!err){
@@ -136,6 +145,7 @@ app.get("/gameplat", function(req,res){
     })
 })
 
+//getting game category
 app.get("/gamecat", function(req,res){
     user.getcat(function(err,result){
         if(!err){
@@ -147,6 +157,7 @@ app.get("/gamecat", function(req,res){
     })
 })
 
+//uploading game
 app.post("/game",  verifyToken,(req,res) => {
     console.log(req.type)
     if (req.type == "admin"){
@@ -167,6 +178,7 @@ app.post("/game",  verifyToken,(req,res) => {
 
 })
 
+//uploading new platform
 app.post("/platform", verifyToken,(req,res,next) => {
     if (req.type == "admin"){
     user.insertplat(req.body, (error) =>{
@@ -192,5 +204,4 @@ app.post("/platform", verifyToken,(req,res,next) => {
     }
 })
 
-app
 module.exports = app
