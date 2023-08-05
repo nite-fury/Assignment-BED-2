@@ -10,7 +10,6 @@ var urlencodedParser = bodyParser.urlencoded({extended: false})
 app.use(bodyParser.json())
 app.use(urlencodedParser)
 var cors = require('cors');
-const upload = require('../upload/multer')
 app.options('*',cors());
 app.use(cors());
 var urlencodedParser=bodyParser.urlencoded({extended:false})

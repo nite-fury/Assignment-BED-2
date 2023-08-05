@@ -8,6 +8,7 @@ var jwt =require('jsonwebtoken')
 var config = require('../config.js')
 
 const User = {
+  //for login API /users/login
   login: function(email, password, callback){
     var dbConn = db.getConnection();
     dbConn.connect(function (err){
@@ -41,7 +42,7 @@ const User = {
       }
     })
   },
-   //function to insert new user
+   //for registration API /users/signup
    insert: function (user, callback) {
     var dbConn = db.getConnection();
     dbConn.connect(function (err) {
@@ -61,6 +62,7 @@ const User = {
       }
     });
   },
+  //for loading games API /game
   findAll: function(callback) {
     dbConn = db.getConnection()
     dbConn.connect(function(err){
@@ -81,6 +83,7 @@ const User = {
           }
     });
   },
+  //for searching for games API /game/:search
   searchgame: function (search, callback) {
 
 		var conn = db.getConnection();
@@ -106,6 +109,7 @@ const User = {
 			}
 		});
 	},
+  //for getting game details from server API /game/desc/:priceid
   searchpriceid: function (search, callback) {
 
 		var conn = db.getConnection();
@@ -129,6 +133,7 @@ const User = {
 			}
 		});
   },
+  //for sending review API /review
   reviewpost: function (user, tokenuid, callback) {
     var dbConn = db.getConnection();
     dbConn.connect(function (err) {
@@ -150,6 +155,7 @@ const User = {
       }
     });
   },
+  //for getting review based on gameid API /review/:gid
   getreview: function (search, callback) {
 
 		var conn = db.getConnection();
@@ -173,6 +179,7 @@ const User = {
 			}
 		});
   },
+  //getting game based on platform API /gameplat/:pid
   searchgamebypid: function (search, callback) {
 
 		var conn = db.getConnection();
@@ -198,6 +205,7 @@ const User = {
 			}
 		});
 	},
+  //for getting platform names and platformid API /gameplat
   getallpid: function(callback) {
     dbConn = db.getConnection()
     dbConn.connect(function(err){
@@ -218,6 +226,7 @@ const User = {
           }
     });
   },
+  //for getting game category API /gamecat
   getcat: function(callback) {
     dbConn = db.getConnection()
     dbConn.connect(function(err){
@@ -238,6 +247,7 @@ const User = {
           }
     });
   },
+  //for uploading game API /game
   insertgame: function (game,callback) {
     var dbConn = db.getConnection();
     dbConn.connect(function (err) {
@@ -360,6 +370,7 @@ const User = {
   }
   });
   },
+  //for uploading platform API /platform
   insertplat: function (plat, callback) {
     var dbConn = db.getConnection();
     dbConn.connect(function (err) {
