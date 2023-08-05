@@ -110,7 +110,7 @@ app.post("/review",verifyToken,function(req,res){
 app.get("/review/:gid", function(req,res){
     const gameid = req.params.gid
     user.getreview(gameid, function(err,result){
-        if(!err){
+        if(!err && result.length != 0){
             res.status(200).send(result)
         }
         else{
@@ -123,7 +123,7 @@ app.get("/review/:gid", function(req,res){
 app.get("/gameplat/:pid", function(req, res){
     var pid = req.params.pid;
     user.searchgamebypid(pid, function(err, result){
-        if(!err){
+        if(!err && result.length != 0){
             res.send(result);
         }else{
             res.status(500).send("Internal Server Error");

@@ -259,103 +259,103 @@ const User = {
          platformid = game.plat
          categoryid = game.cat
          if (price.length == platformid.length){
-          console.log("price length check PASS")
-          platformidsql = [] 
-          correctplat = []
-          wrongplat = []
-          catidsql = []
-          wrongcatid = []
-          correctcatid = []
-          const checkplatform = "SELECT platformid FROM platform;"
-          dbConn.query(checkplatform, (error, result) => {
-            if (error || result == null || result.length == 0) {
-              console.log("platform check FAIL")
+            console.log("price length check PASS")
+            platformidsql = [] 
+            correctplat = []
+            wrongplat = []
+            catidsql = []
+            wrongcatid = []
+            correctcatid = []
+            const checkplatform = "SELECT platformid FROM platform;"
+            dbConn.query(checkplatform, (error, result) => {
+              if (error || result == null || result.length == 0) {
+                console.log("platform check FAIL")
+                return callback(null, null);
+              }
+              else {
+                platformidsql.push(result)
+              }
+              console.log(platformidsql)
+              console.log(platformid)
+              if (platformidsql[0].length >= platformid.length){
+                console.log("platform check PASS")
+            for (i = 0; i < platformidsql[0].length; i++){
+              for (a = 0;a < platformid.length; a++){
+              if (platformid[a] == platformidsql[0][i].platformid){
+                correctplat.push(platformid[a])
+              }
+              else {
+                wrongplat.push(platformid[a])
+              }
+            }
+          }
+        }
+        else {
+          console.log("platform check FAIL")
+          return callback(null, null)
+        }
+          const checkcategory = "SELECT catid FROM category;"
+          dbConn.query(checkcategory, (error, catresult) => {
+            console.log(catresult)
+            if (error || catresult == null || catresult.length == 0){
+              console.log(error)
+              console.log(catresult)
+              console.log("category check FAIL 1")
               return callback(null, null);
             }
             else {
-              platformidsql.push(result)
+              catidsql.push(catresult)
             }
-            console.log(platformidsql)
-            console.log(platformid)
-            if (platformidsql[0].length >= platformid.length){
-              console.log("platform check PASS")
-          for (i = 0; i < platformidsql[0].length; i++){
-            for (a = 0;a < platformid.length; a++){
-            if (platformid[a] == platformidsql[0][i].platformid){
-              correctplat.push(platformid[a])
-            }
-            else {
-              wrongplat.push(platformid[a])
-            }
-          }
-        }
-      }
-      else {
-        console.log("platform check FAIL")
-        return callback(null, null)
-      }
-        const checkcategory = "SELECT catid FROM category;"
-        dbConn.query(checkcategory, (error, catresult) => {
-          console.log(catresult)
-          if (error || catresult == null || catresult.length == 0){
-            console.log(error)
-            console.log(catresult)
-            console.log("category check FAIL 1")
-            return callback(null, null);
-          }
-          else {
-            catidsql.push(catresult)
-          }
-          if (catidsql[0].length >= categoryid.length){
-            console.log("category check PASS")
-          for (i = 0; i < catidsql[0].length; i++){
-            for (a = 0;a < categoryid.length; a++){
-            if (categoryid[a] == catidsql[0][i].catid){
-              correctcatid.push(categoryid[a])
-            }
-            else {
-              wrongcatid.push(categoryid[a])
+            if (catidsql[0].length >= categoryid.length){
+              console.log("category check PASS")
+            for (i = 0; i < catidsql[0].length; i++){
+              for (a = 0;a < categoryid.length; a++){
+              if (categoryid[a] == catidsql[0][i].catid){
+                correctcatid.push(categoryid[a])
+              }
+              else {
+                wrongcatid.push(categoryid[a])
+              }
             }
           }
         }
-      }
-      else {
-        console.log("category check FAIL")
-        return callback(null, null)
-      }
-        if (correctplat.length == platformid.length && correctcatid.length == categoryid.length){
-          console.log("Game insert PASS")
-         const gameisertquery = "INSERT INTO game (title, description, year) VALUES (?, ?, ?);";
-         dbConn.query(gameisertquery, [game.title, game.desc, game.year], (error, gameresults) => {
-          if (error) {
-            console.log(error)
-            return callback(error, null);
-          }
-          gameres = gameresults.insertId
-        for (i = 0; i < price.length; i++) {
-            console.log("Price insert PASS")
-        const insertQuery ="INSERT INTO gameprices (gameid, price, platformid) VALUES (?, ?, ?);";
-        dbConn.query(insertQuery, [gameres, price[i], platformid[i]], (error, results) => {
-          if (error) {
-            console.log(error)
-            return callback(error, null)
-          }
+        else {
+          console.log("category check FAIL")
+          return callback(null, null)
+        }
+          if (correctplat.length == platformid.length && correctcatid.length == categoryid.length){
+            console.log("Game insert PASS")
+          const gameisertquery = "INSERT INTO game (title, description, year) VALUES (?, ?, ?);";
+          dbConn.query(gameisertquery, [game.title, game.desc, game.year], (error, gameresults) => {
+            if (error) {
+              console.log(error)
+              return callback(error, null);
+            }
+            gameres = gameresults.insertId
+          for (i = 0; i < price.length; i++) {
+              console.log("Price insert PASS")
+          const insertQuery ="INSERT INTO gameprices (gameid, price, platformid) VALUES (?, ?, ?);";
+          dbConn.query(insertQuery, [gameres, price[i], platformid[i]], (error, results) => {
+            if (error) {
+              console.log(error)
+              return callback(error, null)
+            }
+          });
+        }
+        for(catids = 0; catids < categoryid.length; catids++){
+          console.log("insert into price PASS")
+          const inserttogamecat = "INSERT INTO gamecategory (gameid, catid) VALUES (?, ?);";
+          dbConn.query(inserttogamecat, [gameres, categoryid[catids]], (error, results) => {
+            if (error){
+              return callback(error, null);
+            }
+            console.log("Inserted into new category")
+          });
+        }
+        dbConn.end()  
+        return callback(null, gameresults);          
         });
-       }
-       for(catids = 0; catids < categoryid.length; catids++){
-        console.log("insert into price PASS")
-        const inserttogamecat = "INSERT INTO gamecategory (gameid, catid) VALUES (?, ?);";
-        dbConn.query(inserttogamecat, [gameres, categoryid[catids]], (error, results) => {
-          if (error){
-            return callback(error, null);
-          }
-          console.log("Inserted into new category")
-        });
-       }
-       dbConn.end()  
-       return callback(null, gameresults);          
-      });
-      }
+        }
       else{
         console.log("platid and catid length check FAIL")
         return callback(null, null)
