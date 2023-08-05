@@ -33,7 +33,6 @@ app.post("/users/login", (req,res) => {
         } else {
             console.log(err)
             res.sendStatus(500);
-            res.send(err.statusCode);
         }
     });
 });
@@ -76,7 +75,7 @@ app.get('/game/:search',function(req, res){
         if(!err){
             res.send(result);
         }else{
-            res.status(500).send("Some error");
+            res.status(500).send("Internal Server Error");
         }
     });
 })
@@ -85,10 +84,10 @@ app.get('/game/:search',function(req, res){
 app.get("/game/desc/:priceid",function(req,res){
     const priceid = req.params.priceid;
     user.searchpriceid(priceid, function(err,result){
-        if(!err){
+        if(!err && result.length != 0){
             res.send(result);
         }else{
-            res.status(500).send("Some error");
+            res.status(500).send("Internal Server Error");
         }
     })
 })
@@ -115,7 +114,7 @@ app.get("/review/:gid", function(req,res){
             res.status(200).send(result)
         }
         else{
-            res.status(500).send("Some error")
+            res.status(500).send("Internal Server Error")
         }
     })
 })
@@ -127,7 +126,7 @@ app.get("/gameplat/:pid", function(req, res){
         if(!err){
             res.send(result);
         }else{
-            res.status(500).send("Some error");
+            res.status(500).send("Internal Server Error");
         }
     });
 })
@@ -139,7 +138,7 @@ app.get("/gameplat", function(req,res){
             res.status(200).send(result)
         }
         else{
-            res.status(500).send("Some error");
+            res.status(500).send("Internal Server Error");
         }
     })
 })
@@ -151,7 +150,7 @@ app.get("/gamecat", function(req,res){
             res.status(200).send(result)
         }
         else {
-            res.status(500).send("Some error");
+            res.status(500).send("Internal Server Error");
         }
     })
 })

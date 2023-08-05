@@ -1,3 +1,6 @@
+// name: lennon su chee
+// class: DISM/FT/2A/02
+// Admin no.: 2238801
 var jwt = require('jsonwebtoken');
 
 var config = require('../config');
