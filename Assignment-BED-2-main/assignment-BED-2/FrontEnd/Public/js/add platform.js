@@ -46,10 +46,16 @@ $("#add_plat").submit((e) => {
             $('#msg').text("Data has been submitted Successfully!")
         },
         error: (xhr, status, err) => {
+            console.log(xhr.status)
+            if (xhr.status === 422){
+            $('#msg').text("Duplicate Entry")    
+            }
+            else{
             console.log("failed here")
-            console.log(JSON.stringify(status))
-            console.log(JSON.stringify(err))
+            console.log(status)
+            console.log(err)
             $('#msg').text("Failed to submit")
+            }
         }
     })
 });
